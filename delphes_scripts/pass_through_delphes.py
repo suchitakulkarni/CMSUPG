@@ -6,6 +6,9 @@
 # for me the folders look like
 # eos/	delphes/   cms_exercises/
 
+# An existing flaw in the script, it is not checked if the delphes run was successful
+# I always assume that it is so and that the output root file has been created. 
+# I will change this in the coming days
  
 import os, glob, sys
 import commands, shutil
@@ -34,6 +37,20 @@ parser.add_option("-t", "--testmode", dest="testmode",
                      default="n",
                      help="run in testmode, only one lhe file will be passed through delphes in this case, input y or n")
 (options, args) = parser.parse_args()
+
+
+# Export relevant paths necessary for pythia8 used in delphes 3.3.3pre15
+# this is the Py8 version that comes with CMSSW_8_0_4
+
+# initialise cmsenv
+currentdir = os.getcwd()
+commands.getoutput("cd")
+commands.getoutput("cd CMSSW_8_0_4/")
+commands.getoutput("cd src")
+commands.getoutput("cmsenv")
+os.chdir(currentdir)
+commands.getoutput("export PYTHIA8=/cvmfs/cms.cern.ch/slc6_amd64_gcc530/external/pythia8/212-ikhhed3/")
+commands.getoutput("export LD_LIBRARY_PATH=$PYTHIA8/lib:$LD_LIBRARY_PATH")
 
 print "your delphes is installed at ", options.delphesdir
 print "Location of your decayed LHE file is", options.decayed_dir
@@ -73,6 +90,13 @@ pythia_template = "pythia_cmnd.template"
 templatelines = open(pythia_template,'r').read().split('\n')
 
 currentdir = os.getcwd()
+
+# You'll need to install delphes
+os.chdir(options.delphesdir)
+print commands.getoutput("make clean")
+print commands.getoutput("./configure")
+print commands.getoutput("make -j 4")
+os.chdir(currentdir)
 
 def run_delphes(outfilename = "test.root", cmndfile_name = "test.txt", PU = 200):
     currentdir = os.getcwd()
