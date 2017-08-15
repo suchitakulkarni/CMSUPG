@@ -7,7 +7,7 @@ Main:timesAllowErrors = 3          ! how many aborts before run stops
 
 Init:showChangedSettings = on      ! list changed settings
 Init:showChangedParticleData = off ! list changed particle data
-Next:numberCount = 100             ! print message every n events
+Next:numberCount = 1             ! print message every n events
 Next:numberShowInfo = 1            ! print event information n times
 Next:numberShowProcess = 1         ! print process record n times
 Next:numberShowEvent = 0           ! print event record n times
@@ -16,3 +16,41 @@ Next:numberShowEvent = 0           ! print event record n times
 
 Beams:frameType = 4
 Beams:LHEF = filepath
+
+! 4) testing the minumum mass for W and Z decays
+! 23:mMin = 0.1
+! 24:mMin = 0.1
+
+! 3) Enable matching
+JetMatching:merge = on
+
+! settings from Julie's card
+! Madgraph run: 
+JetMatching:setMad = off
+JetMatching:scheme = 1
+JetMatching:merge = on
+JetMatching:jetAlgorithm = 2
+JetMatching:etaJetMax = 5.
+JetMatching:coneRadius = 1
+JetMatching:slowJetPower = 1
+JetMatching:qCut = 30
+JetMatching:nQmatch = 5
+JetMatching:nJetMax = 2
+JetMatching:doShowerKt = off
+
+! 6) Other settings. Can be expanded as desired.
+Tune:pp = 14                            ! Pythia8CUEP8M1Settings_cfi
+Tune:ee = 7                             ! Pythia8CUEP8M1Settings_cfi
+MultipartonInteractions:pT0Ref=2.4024   ! Pythia8CUEP8M1Settings_cfi
+MultipartonInteractions:ecmPow=0.25208  ! Pythia8CUEP8M1Settings_cfi
+MultipartonInteractions:expPow=1.6      ! Pythia8CUEP8M1Settings_cfi
+
+Tune:preferLHAPDF = 2                     ! Pythia8CommonSettings_cfi
+Main:timesAllowErrors = 10000             ! Pythia8CommonSettings_cfi
+Check:epTolErr = 0.01                     ! Pythia8CommonSettings_cfi 
+Beams:setProductionScalesFromLHEF = off   ! Pythia8CommonSettings_cfi
+!SLHA:keepSM = on                          ! Pythia8CommonSettings_cfi turning this off since SUSY SMS SLHAs are not always consistant
+SLHA:minMassSM = 1000.                    ! Pythia8CommonSettings_cfi
+ParticleDecays:limitTau0 = on             ! Pythia8CommonSettings_cfi
+ParticleDecays:tau0Max = 10               ! Pythia8CommonSettings_cfi
+ParticleDecays:allowPhotonRadiation = on  ! Pythia8CommonSettings_cfi
